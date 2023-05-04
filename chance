@@ -1,0 +1,29 @@
+precated
+public class InsertXSSMenu extends JMenuItem {
+	//JMenuItem vs. JMenu
+	public InsertXSSMenu(BurpExtender burp){
+		if (burp.invocation.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST) {
+			if (burp.tableModel.getConfigValueByKey("XSS-Payload")!=null){
+				this.setText("^_^ Insert XSS");
+				this.addActionListener(new InsertXSSAction(burp,burp.invocation));
+			}
+		}
+	}
+}
+
+class InsertXSSAction implements ActionListener {
+	private IContextMenuInvocation invocation;
+	public IExtensionHelpers helpers;
+	public PrintWriter stdout;
+	public PrintWriter stderr;
+	public IBurpExtenderCallbacks callbacks;
+	public BurpExtender burp;
+
+	public InsertXSSAction(BurpExtender burp, IContextMenuInvocation invocation) {
+		this.burp = burp;
+		this.invocation = invocation;
+		this.helpers = burp.helpers;
+		this.callbacks = burp.callbacks;
+		this.stderr = burp.stderr;
+		this.stdout = burp.stdout;
+	}
